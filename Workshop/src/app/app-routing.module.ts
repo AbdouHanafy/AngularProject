@@ -14,14 +14,10 @@ import { ResidenceDetailsComponent } from './residence-details/residence-details
 const routes: Routes = [
   { path: '', component: HomeComponent },
   {
-    path: 'residences',  
-    component: ResidencesComponent,
-    
+    path: 'residences', component: ResidencesComponent,
   },
   {
-    path: 'apartments',  
-    component: ApartmentsComponent,
-    
+    path: 'apartments', component: ApartmentsComponent,
   },
   {path: 'apartments/:id', component: ApartmentsByResidenceComponent},
   {path: 'residences/:id', component: ResidenceDetailsComponent},

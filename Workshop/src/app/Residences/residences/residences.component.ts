@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Residence } from 'src/app/core/models/residence';
-import { ResidenceService } from 'src/app/residence.service';
+import { CommonService } from 'src/app/services/common.service';
+import { ResidenceService } from 'src/app/services/residence.service';
 @Component({
   selector: 'app-residences',
   templateUrl: './residences.component.html',
@@ -15,12 +16,35 @@ export class ResidencesComponent implements OnInit {
   listResidencesFiltered: Residence[]=[];
   listResidences: Residence[] = [];
 
-  constructor(private router: Router, private residenceService : ResidenceService) { 
+
+  
+
+  constructor(private router: Router, private residenceService : ResidenceService,private commonService: CommonService) { 
   } 
 
   ngOnInit(): void {
-    this.residenceService.getResidences().subscribe(residences => this.listResidences = residences);
-    this.listResidencesFiltered = this.listResidences;
+    this.loadResidences();
+  }
+
+  loadResidences() {
+    this.residenceService.getResidences().subscribe(
+      data => this.listResidences = data
+    );
+  }
+
+  onDeleteResidence(id: number) {
+    const index = this.listResidences.findIndex(residence => residence.id === id);
+    
+    if (index !== -1) {
+      this.residenceService.deleteResidence(id).subscribe(() => {
+        this.listResidences.splice(index, 1); 
+      });
+    }
+  }
+
+
+  getNumberOfSimilarAddresses(address: string) {
+    return this.commonService.getSameValueOf(this.listResidences, 'address', address);
   }
 
 
